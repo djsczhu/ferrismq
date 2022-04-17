@@ -1,0 +1,84 @@
+syntax = "proto3";
+package fmq_proto;
+
+service QueueService {
+	rpc SendMessage(SendMessageRequest) returns (SendMessageResponse);
+	rpc ReceiveMessage(ReceiveMessageRequest) returns (ReceiveMessageResponse);
+	rpc DeleteMessage(DeleteMessageRequest) returns (DeleteMessageResponse);
+	rpc ListQueues(ListQueuesRequest) returns (ListQueuesResponse);
+	rpc CreateQueue(CreateQueueRequest) returns (CreateQueueResponse);
+	rpc DeleteQueue(DeleteQueueRequest) returns (DeleteQueueResponse);
+}
+
+message SendMessageRequest {
+	string queue_name = 1;
+	bytes payload = 2;
+	uint32 delay = 3;
+	string metadata = 4;
+}
+
+message SendMessageResponse {
+	string message_id = 1;
+}
+
+message ReceiveMessageRequest {
+	string queue_name = 1;
+	int32 count = 2;
+	int32 visible_timeout = 3;
+}
+
+message DataItem {
+	string message_id = 1;
+	string metadata = 2;
+	bytes payload = 3;
+}
+
+message ReceiveMessageResponse {
+	repeated DataItem items = 1;
+}
+
+message DeleteMessageRequest {
+	string queue_name = 1;
+	string message_id = 2;
+}
+
+message DeleteMessageResponse {
+
+}
+
+
+message ListQueuesRequest {
+
+}
+
+message QueueStats {
+	string queue_name = 1;
+	uint64 backlog_size = 2;
+	uint64 delayed_size = 3;
+}
+
+message ListQueuesResponse {
+	repeated QueueStats topics = 1;
+}
+
+message InnerIndex {
+	uint64 timestamp = 1;
+	bytes message_id = 2;
+}
+
+
+message CreateQueueRequest {
+	string queue_name = 1;
+}
+
+message CreateQueueResponse {
+
+}
+
+message DeleteQueueRequest {
+	string queue_name = 1;
+}
+
+message DeleteQueueResponse {
+
+}
